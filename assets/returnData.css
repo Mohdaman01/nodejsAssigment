@@ -1,0 +1,19 @@
+
+.container{
+    margin: 100px 0;
+    text-align: center;
+    font-size: large;
+}
+
+.container span{
+    margin: 1em;
+}
+
+.container button{
+    margin: 1em;
+}
+
+#span-2{
+    border: 2px solid black;
+    padding: 0 .5em;
+}

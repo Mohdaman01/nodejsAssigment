@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Function to truncate a file to a specified number of lines
+truncate_to_lines() {
+    local file="$1"
+    local lines="$2"
+    tail -n "$lines" "$file" > "$file.tmp"
+    mv "$file.tmp" "$file"
+}
+
+# Find the largest log file
+largest_log=$(find / -name "*.log" -type f 2>/dev/null | xargs du -h | sort -rh | head -n 1 | cut -f 2)
+
+if [ -n "$largest_log" ]; then
+    echo "Largest log file found: $largest_log"
+
+    # Check if the file has more than 100 lines
+    line_count=$(wc -l < "$largest_log")
+    if [ "$line_count" -gt 100 ]; then
+        echo "Truncating $largest_log to 100 lines..."
+        truncate_to_lines "$largest_log" 100
+        echo "Truncation complete."
+    else
+        echo "$largest_log already has 100 or fewer lines. No truncation needed."
+    fi
+else
+    echo "No log files found on the system."
+fi
